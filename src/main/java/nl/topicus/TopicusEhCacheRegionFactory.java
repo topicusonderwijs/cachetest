@@ -24,8 +24,6 @@ public class TopicusEhCacheRegionFactory extends EhCacheRegionFactory
 {
 	private static final long serialVersionUID = 1L;
 
-	private static final String HIBERNATE = "hibernate-.";
-
 	private static final Logger log = LoggerFactory.getLogger(TopicusEhCacheRegionFactory.class);
 
 	private String jgroupsHosts;
@@ -72,7 +70,7 @@ public class TopicusEhCacheRegionFactory extends EhCacheRegionFactory
 			Duration duration)
 	{
 		config.addCache(
-			setup(new CacheConfiguration(cacheName, maxEntriesLocalHeap), duration));
+			setup(new CacheConfiguration("cachetest-1.0.war#primary."+cacheName, maxEntriesLocalHeap), duration));
 	}
 
 	private CacheConfiguration setup(CacheConfiguration cache, Duration duration)
