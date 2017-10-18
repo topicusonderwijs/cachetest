@@ -25,6 +25,10 @@ public class TopicusEhCacheRegionFactory extends EhCacheRegionFactory
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger log = LoggerFactory.getLogger(TopicusEhCacheRegionFactory.class);
+	
+	public static final String QUERYCACHE = "org.hibernate.cache.internal.StandardQueryCache";
+
+	public static final String TIMESTAMPCACHE = "org.hibernate.cache.spi.UpdateTimestampsCache";
 
 	private String jgroupsHosts;
 
@@ -55,6 +59,8 @@ public class TopicusEhCacheRegionFactory extends EhCacheRegionFactory
 		Duration oneHour = Duration.ofHours(1);
 
 		addCache(config, "entity", 20000, oneHour);
+		addCache(config, QUERYCACHE, 20000, oneHour);
+		addCache(config, TIMESTAMPCACHE, 20000, oneHour);
 
 		if (jgroupsHosts != null)
 		{
