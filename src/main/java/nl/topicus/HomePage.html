@@ -14,6 +14,12 @@
 			<button wicket:id="wipeCache">WIPE CACHE</button>
 			<button wicket:id="wipeDB">WIPE DB</button>
 			
+			<ul>
+				<li><b>INSERT</b> Inserts the specified number of entities, using JPA, entities will be cached on this node.</li>
+				<li><b>FILL CACHE</b> Read all entities from the database and cache them on this node.</li>
+				<li><b>WIPE CACHE</b> Execute 'DELETE FROM myentity WHERE id=-1', clearing the cache without changing the database.</li>
+				<li><b>WIPE DB</b> Execute 'DELETE FROM myentity', clearing the cache and the database.</li>
+			</ul>
 			<br>
 			Read value: <input type="number" wicket:id="value">
 			<table>
@@ -27,6 +33,11 @@
 					<td><button wicket:id="read">READ</button></td>
 				</tr>
 			</table>
+			<ul>
+				<li><b>INC</b> Reads the entity using EntityManager.find and increments its value.</li>
+				<li><b>UPDATE</b> Executes a bulk update, setting the value to a random int, should invalidate the entire cache.</li>
+				<li><b>READ</b> Reads the entity using EntityManager.find and display the value in the field above.</li>
+			</ul>
 		</form>
 	</body>
 </html>
