@@ -1,0 +1,8 @@
+target
+*.log
+*.log.?
+.settings
+.project
+.classpath
+*.swp
+rebel.xml

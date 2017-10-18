@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>Apache Wicket Quickstart</title>
+		<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
+	</head>
+	<body>
+		<form wicket:id="form">
+			<input type="number" wicket:id="aantal">
+			<button wicket:id="insert">INSERT</button>
+			<button wicket:id="fillCache">FILL CACHE</button>
+			<button wicket:id="wipeCache">WIPE CACHE</button>
+			<button wicket:id="wipeDB">WIPE DB</button>
+			
+			<br>
+			Read value: <input type="number" wicket:id="value">
+			<table>
+				<tr><th>ID</th><th>VERSION</th><th>VALUE</th></tr>
+				<tr wicket:id="list">
+					<td wicket:id="id"></td>
+					<td wicket:id="version"></td>
+					<td wicket:id="value"></td>
+					<td><button wicket:id="inc">INC</button></td>
+					<td><button wicket:id="update">UPDATE</button></td>
+					<td><button wicket:id="read">READ</button></td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
