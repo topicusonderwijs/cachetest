@@ -10,7 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity()
+@Cache(region="entity", usage=CacheConcurrencyStrategy.READ_WRITE)
 public class MyEntity
 {
 	@Id()
