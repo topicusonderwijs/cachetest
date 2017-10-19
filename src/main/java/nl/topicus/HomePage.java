@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -14,123 +15,102 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
-public class HomePage extends WebPage
-{
+public class HomePage extends WebPage {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private DAO dao;
 
-	public HomePage()
-	{
+	public HomePage() {
 		Form<Void> form = new Form<>("form");
 		add(form);
 
-		NumberTextField<Integer> aantal =
-			new NumberTextField<>("aantal", new Model<>(10), Integer.class);
+		NumberTextField<Integer> aantal = new NumberTextField<>("aantal", new Model<>(10), Integer.class);
 		aantal.setStep(1);
 		form.add(aantal);
 
-		form.add(new Button("insert")
-		{
+		form.add(new Button("insert") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onSubmit()
-			{
+			public void onSubmit() {
 				dao.insert(aantal.getModelObject());
 			}
 		});
 
-		form.add(new Button("fillCache")
-		{
+		form.add(new Button("fillCache") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onSubmit()
-			{
+			public void onSubmit() {
 				dao.fillCache();
 			}
 		});
 
-		form.add(new Button("wipeCache")
-		{
+		form.add(new Button("wipeCache") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onSubmit()
-			{
+			public void onSubmit() {
 				dao.wipeCache();
 			}
 		});
 
-		form.add(new Button("wipeDB")
-		{
+		form.add(new Button("wipeDB") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onSubmit()
-			{
+			public void onSubmit() {
 				dao.wipeDB();
 			}
 		});
 
-		NumberTextField<Integer> value =
-			new NumberTextField<>("value", new Model<>(), Integer.class);
+		NumberTextField<Integer> value = new NumberTextField<>("value", new Model<>(), Integer.class);
 		form.add(value);
 
-		LoadableDetachableModel<List<NoJpaEntity>> entities =
-			new LoadableDetachableModel<List<NoJpaEntity>>()
-			{
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected List<NoJpaEntity> load()
-				{
-					return dao.list();
-				}
-			};
-
-		ListView<NoJpaEntity> list = new ListView<NoJpaEntity>("list", entities)
-		{
+		CheckBox useCache = new CheckBox("useCache", new Model<>(true));
+		form.add(useCache);
+		LoadableDetachableModel<List<NoJpaEntity>> entities = new LoadableDetachableModel<List<NoJpaEntity>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem<NoJpaEntity> item)
-			{
+			protected List<NoJpaEntity> load() {
+				return dao.list(useCache.getModelObject());
+			}
+		};
+
+		ListView<NoJpaEntity> list = new ListView<NoJpaEntity>("list", entities) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(ListItem<NoJpaEntity> item) {
 				item.add(new Label("id", item.getModelObject().getId()));
 				item.add(new Label("version", item.getModelObject().getVersion()));
 				item.add(new Label("value", item.getModelObject().getValue()));
-				item.add(new Button("inc")
-				{
+				item.add(new Button("inc") {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onSubmit()
-					{
+					public void onSubmit() {
 						MyEntity e = dao.read(item.getModelObject().getId());
 						e.setValue(e.getValue() + 1);
 						entities.detach();
 					}
 				});
-				item.add(new Button("update")
-				{
+				item.add(new Button("update") {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onSubmit()
-					{
+					public void onSubmit() {
 						dao.updateViaCriteria(item.getModelObject().getId());
 						entities.detach();
 					}
 				});
-				item.add(new Button("read")
-				{
+				item.add(new Button("read") {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onSubmit()
-					{
+					public void onSubmit() {
 						value.setModelObject(dao.read(item.getModelObject().getId()).getValue());
 					}
 				});

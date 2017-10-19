@@ -17,30 +17,25 @@ import javax.persistence.criteria.Root;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class DAO
-{
+public class DAO {
 	@PersistenceContext
 	private EntityManager em;
 
-	public void insert(int aantal)
-	{
+	public void insert(int aantal) {
 		for (int i = 0; i < aantal; i++)
 			em.persist(new MyEntity());
 	}
 
-	public void fillCache()
-	{
+	public void fillCache() {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<MyEntity> criteria = cb.createQuery(MyEntity.class);
 		Root<MyEntity> root = criteria.from(MyEntity.class);
 		criteria.select(root);
-		TypedQuery<MyEntity> query =
-			em.createQuery(criteria).setHint("org.hibernate.cacheable", true);
+		TypedQuery<MyEntity> query = em.createQuery(criteria).setHint("org.hibernate.cacheable", true);
 		query.getResultList();
 	}
 
-	public void wipeCache()
-	{
+	public void wipeCache() {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaDelete<MyEntity> delete = cb.createCriteriaDelete(MyEntity.class);
 		Root<MyEntity> root = delete.from(MyEntity.class);
@@ -48,33 +43,28 @@ public class DAO
 		em.createQuery(delete).executeUpdate();
 	}
 
-	public void wipeDB()
-	{
+	public void wipeDB() {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaDelete<MyEntity> delete = cb.createCriteriaDelete(MyEntity.class);
 		delete.from(MyEntity.class);
 		em.createQuery(delete).executeUpdate();
 	}
 
-	public List<NoJpaEntity> list()
-	{
+	public List<NoJpaEntity> list(boolean useCache) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<NoJpaEntity> criteria = cb.createQuery(NoJpaEntity.class);
 		Root<MyEntity> root = criteria.from(MyEntity.class);
 		criteria.orderBy(cb.asc(root.get("id")));
-		criteria.select(cb.construct(NoJpaEntity.class, root.get("id"), root.get("version"),
-			root.get("value")));
-		TypedQuery<NoJpaEntity> query = em.createQuery(criteria);
+		criteria.select(cb.construct(NoJpaEntity.class, root.get("id"), root.get("version"), root.get("value")));
+		TypedQuery<NoJpaEntity> query = em.createQuery(criteria).setHint("org.hibernate.cacheable", useCache);
 		return query.getResultList();
 	}
 
-	public MyEntity read(long id)
-	{
+	public MyEntity read(long id) {
 		return em.find(MyEntity.class, id);
 	}
 
-	public void updateViaCriteria(long id)
-	{
+	public void updateViaCriteria(long id) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaUpdate<MyEntity> update = cb.createCriteriaUpdate(MyEntity.class);
 		Root<MyEntity> root = update.from(MyEntity.class);
