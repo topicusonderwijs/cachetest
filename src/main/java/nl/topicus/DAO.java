@@ -3,6 +3,8 @@ package nl.topicus;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Resource;
+import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -20,6 +22,13 @@ import javax.persistence.criteria.Root;
 public class DAO {
 	@PersistenceContext
 	private EntityManager em;
+
+	@Resource
+	private EJBContext context;
+
+	public void markForRollback() {
+		context.setRollbackOnly();
+	}
 
 	public void insert(int aantal) {
 		for (int i = 0; i < aantal; i++)

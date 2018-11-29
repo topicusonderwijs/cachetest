@@ -3,6 +3,7 @@ package nl.topicus;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -112,6 +113,17 @@ public class HomePage extends WebPage {
 					@Override
 					public void onSubmit() {
 						value.setModelObject(dao.read(item.getModelObject().getId()).getValue());
+					}
+				});
+				item.add(new Button("modifyRollback") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onSubmit() {
+						MyEntity e = dao.read(item.getModelObject().getId());
+						e.setValue(e.getValue() + 1);
+						((HttpServletRequest) getWebRequest().getContainerRequest()).setAttribute("rollback", true);
+						entities.detach();
 					}
 				});
 			}
