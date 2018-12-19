@@ -6,3 +6,4 @@ target
 .classpath
 *.swp
 rebel.xml
+.DS_Store

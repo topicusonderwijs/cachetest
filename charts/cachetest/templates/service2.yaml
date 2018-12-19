@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cachetest.fullname" . }}-2
+  labels:
+    app.kubernetes.io/name: {{ include "cachetest.name" . }}-2
+    helm.sh/chart: {{ include "cachetest.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}-2
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-2
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.db_service.port }} 
+      protocol: TCP
+      name: postgres
+    - name: kube-ping
+      targetPort: {{ .Values.kube_ping_service.port }}      
+      port: {{ .Values.kube_ping_service.port }}
+      protocol: TCP   
+  selector:
+    app.kubernetes.io/name: {{ include "cachetest.name" . }}-2
+    app.kubernetes.io/instance: {{ .Release.Name }}-2
+    cachetest.lb: lb-cachetest

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cachetest.fullname" . }}-db
+  labels:
+    app.kubernetes.io/name: {{ include "cachetest.name" . }}-db
+    helm.sh/chart: {{ include "cachetest.chart" . }}-db
+    app.kubernetes.io/instance: {{ .Release.Name }}-db
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-db
+spec:
+  type: {{ .Values.db_service.type }}
+  ports:
+    - port: {{ .Values.db_service.port }} 
+      protocol: TCP
+      name: postgres
+  selector:
+    app.kubernetes.io/name: {{ include "cachetest.name" . }}-db
+    app.kubernetes.io/instance: {{ .Release.Name }}-db

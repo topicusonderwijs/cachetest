@@ -1,0 +1,29 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "cachetest.fullname" . -}}
+{{- $ingressPath := .Values.ingress.path -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-2
+  labels:
+    app.kubernetes.io/name: {{ include "cachetest.name" . }}-2
+    helm.sh/chart: {{ include "cachetest.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}-2
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-2
+{{- with .Values.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+{{- if .Values.ingress.tlsSecretName }}
+  tls:
+  - secretName: {{ .Values.ingress.tlsSecretName }}
+{{- end }}
+  rules:
+  - host: {{ .Values.cache2.url }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $fullName }}-2
+          servicePort: http
+{{- end }}

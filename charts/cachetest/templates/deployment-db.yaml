@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "cachetest.fullname" . }}-db
+  labels:
+    app.kubernetes.io/name: {{ include "cachetest.name" . }}-db
+    helm.sh/chart: {{ include "cachetest.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}-db
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-db
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "cachetest.name" . }}-db
+      app.kubernetes.io/instance: {{ .Release.Name }}-db
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "cachetest.name" . }}-db
+        app.kubernetes.io/instance: {{ .Release.Name }}-db
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-db
+          image: "{{ .Values.db_image.repository }}:{{ .Values.db_image.tag }}"
+          imagePullPolicy: {{ .Values.db_image.pullPolicy }}
+          ports:
+            - name: postgres
+              containerPort: {{ .Values.db_service.port }}
+              protocol: TCP
+          env:
+          - name: POSTGRES_USER
+            value: {{ .Values.cachetest.jdbc_user }}
+          - name: POSTGRES_PASSWORD
+            value: {{ .Values.cachetest.jdbc_password }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

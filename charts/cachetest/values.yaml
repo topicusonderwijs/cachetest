@@ -1,0 +1,63 @@
+# Default values for cachetest.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: docker-staging.topicusonderwijs.nl/geon/geon-cache-test
+  tag: latest
+  pullPolicy: Always
+
+db_image:
+  repository: postgres
+  tag: 10
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+cache1:
+  url: cachetest1.parro.topicusonderwijs.build
+cache2:
+  url: cachetest2.parro.topicusonderwijs.build
+
+
+cachetest:
+  jbdc_url: jdbc:postgresql://cachetest-db:5432/cachetest
+  jdbc_user: cachetest
+  jdbc_password: cachetest
+
+service:
+  type: ClusterIP
+  port: 80
+
+db_service:
+  type: ClusterIP
+  port: 5432
+
+kube_ping_service:
+  type: NodePort
+  port: 7600
+
+ingress:
+  enabled: true
+  annotations: 
+    kubernetes.io/ingress.class: traefik
+  path: /
+  tlsSecretName: star-parro-topicusonderwijs-build 
+
+resources: 
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+nodeSelector:
+   pr-builds: "true"
+
+tolerations: []
+
+affinity: {}

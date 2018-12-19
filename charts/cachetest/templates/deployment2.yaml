@@ -1,0 +1,59 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "cachetest.fullname" . }}-2
+  labels:    
+    app.kubernetes.io/name: {{ include "cachetest.name" . }}-2
+    helm.sh/chart: {{ include "cachetest.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}-2
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    cachetest.lb: lb-cachetest
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:      
+      app.kubernetes.io/name: {{ include "cachetest.name" . }}-2
+      app.kubernetes.io/instance: {{ .Release.Name }}-2
+      cachetest.lb: lb-cachetest
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "cachetest.name" . }}-2
+        app.kubernetes.io/instance: {{ .Release.Name }}-2
+        cachetest.lb: lb-cachetest
+    spec:
+      serviceAccountName: jgroups
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: kube-ping
+              containerPort: 7600
+              protocol: TCP 
+          env:
+          - name: JDBC_URL
+            value: {{ .Values.cachetest.jbdc_url }}
+          - name: JDBC_USERNAME
+            value: {{ .Values.cachetest.jdbc_user }}
+          - name: JDBC_PASSWORD
+            value: {{ .Values.cachetest.jdbc_password }}
+          - name: MY_HOST
+            value: cachetest-2
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
