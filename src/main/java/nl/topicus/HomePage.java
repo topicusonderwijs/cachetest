@@ -22,6 +22,8 @@ public class HomePage extends WebPage {
 	@Inject
 	private DAO dao;
 
+	private long lastId = 0L;
+
 	public HomePage() {
 		Form<Void> form = new Form<>("form");
 		add(form);
@@ -129,5 +131,26 @@ public class HomePage extends WebPage {
 			}
 		};
 		form.add(list);
+
+		form.add(new Button("new") {
+			@Override
+			public void onSubmit() {
+				MyEntity myEntity = new MyEntity();
+				myEntity.setValue(1);
+				dao.persist(myEntity);
+				lastId = myEntity.getId();
+				dao.flush();
+			}
+		});
+		
+		form.add(new Button("update") {
+			@Override
+			public void onSubmit() {
+				dao.setCacheModeGet();
+				MyEntity lastEntity = dao.read(lastId);
+				lastEntity.setValue(lastEntity.getValue() + 1);
+				dao.flush();
+			}
+		});
 	}
 }

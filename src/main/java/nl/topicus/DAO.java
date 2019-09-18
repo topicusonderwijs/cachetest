@@ -17,6 +17,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.CacheMode;
+
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class DAO {
@@ -80,5 +82,20 @@ public class DAO {
 		update.where(cb.equal(root.get("id"), id));
 		update.set("value", new Random().nextInt());
 		em.createQuery(update).executeUpdate();
+	}
+	
+	public void persist(MyEntity myEntity)
+	{
+		em.persist(myEntity);
+	}
+	
+	public void flush()
+	{
+		em.flush();
+	}
+	
+	public void setCacheModeGet()
+	{
+		em.unwrap(Session.class).setCacheMode(CacheMode.GET);
 	}
 }
