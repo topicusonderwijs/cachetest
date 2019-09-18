@@ -18,6 +18,7 @@ import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.CacheMode;
+import org.hibernate.Session;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
