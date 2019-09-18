@@ -2,7 +2,7 @@
 
 Instructions to run this test
  - Run `mvn package`
- - Download and unpack WildFly 11.0.0.CR1, use standalone-ha.xml as base for the configuration
+ - Download and unpack WildFly 17.0.1.CR1, use standalone-ha.xml as base for the configuration
  - Add a datasource, like:
  ```
 <datasource jta="true" jndi-name="java:/jdbc/cachetest" pool-name="cachetest" enabled="true" use-ccm="true">
