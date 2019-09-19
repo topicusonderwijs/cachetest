@@ -133,6 +133,8 @@ public class HomePage extends WebPage {
 		form.add(list);
 
 		form.add(new Button("new") {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onSubmit() {
 				MyEntity myEntity = new MyEntity();
@@ -144,6 +146,8 @@ public class HomePage extends WebPage {
 		});
 		
 		form.add(new Button("update") {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onSubmit() {
 				dao.setCacheModeGet();
