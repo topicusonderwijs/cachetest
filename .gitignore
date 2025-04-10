@@ -6,3 +6,5 @@ target
 .classpath
 *.swp
 rebel.xml
+*.iml
+.idea/
