@@ -1,0 +1,22 @@
+
+services:
+  wildfly1:
+    build:
+      context: docker
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    container_name: wildfly1
+    hostname: wildfly1
+    # command: 
+    #   ["/opt/jboss/wildfly/bin/standalone.sh", "-server-config=standalone-ha.xml", "-b", "wildfly1", "-bmanagement", "0.0.0.0"]
+  wildfly2:
+    build:
+      context: docker
+    ports:
+      - "8081:8080"
+      - "9991:9990"
+    container_name: wildfly2
+    hostname: wildfly2
+    # command: 
+    #   ["/opt/jboss/wildfly/bin/standalone.sh", "-server-config=standalone-ha.xml", "-b", "wildfly2", "-bmanagement", "0.0.0.0"]
