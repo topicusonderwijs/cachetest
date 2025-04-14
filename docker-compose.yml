@@ -20,3 +20,9 @@ services:
     hostname: wildfly2
     # command: 
     #   ["/opt/jboss/wildfly/bin/standalone.sh", "-server-config=standalone-ha.xml", "-b", "wildfly2", "-bmanagement", "0.0.0.0"]
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "username"
+      POSTGRES_DB: "cachetest"
