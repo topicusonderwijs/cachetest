@@ -39,14 +39,12 @@
 			<version>6.0.0</version>
 			<scope>provided</scope>
 		</dependency>
-
 <!--		<dependency>-->
 <!--			<groupId>org.jboss.spec.javax.transaction</groupId>-->
 <!--			<artifactId>jboss-transaction-api_1.2_spec</artifactId>-->
 <!--			<version>1.1.1.Final</version>-->
 <!--			<scope>provided</scope>-->
 <!--		</dependency>-->
-
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
@@ -68,19 +66,21 @@
             <artifactId>jakarta.validation-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
 		<dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
-
 		<dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <scope>provided</scope>
         </dependency>
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-core</artifactId>
+			<scope>provided</scope>
+		</dependency><dependency><groupId>org.infinispan</groupId><artifactId>infinispan-core</artifactId><version>15.0.13.Final</version></dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

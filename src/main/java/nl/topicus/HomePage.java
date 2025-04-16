@@ -3,6 +3,7 @@ package nl.topicus;
 import java.util.List;
 
 import jakarta.inject.Inject;
+import jakarta.persistence.Cache;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.markup.html.WebPage;
@@ -15,12 +16,23 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.hibernate.stat.EntityStatistics;
+import org.hibernate.stat.Statistics;
+import org.infinispan.manager.EmbeddedCacheManager;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 public class HomePage extends WebPage {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private DAO dao;
+
+//	@Resource(lookup = "java:jboss/infinispan/container/hibernate")
+//	@Resource(lookup = "java:jboss/infinispan/cache/hibernate/entity")
+//	private Cache cache;
 
 	private long lastId = 0L;
 
@@ -156,5 +168,42 @@ public class HomePage extends WebPage {
 				dao.flush();
 			}
 		});
+
+		form.add(new Button("listEntititiesInCache") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onSubmit()
+			{
+				try
+				{
+					logCurrentCache();
+				}
+				catch (NamingException e)
+				{
+					throw new RuntimeException(e);
+				}
+			}
+		 });
+
+
 	}
+	public void logCurrentCache() throws NamingException
+	{
+		System.out.println("hello");
+		Context context = new InitialContext();
+		EmbeddedCacheManager cacheManager = (EmbeddedCacheManager) context.lookup("java:jboss/infinispan/container/hibernate");
+
+
+//		Statistics statistics = cache.getSessionFactory().getStatistics();
+//		for (String entityName : statistics.getEntityNames())
+//		{
+//			System.out.println("entity: " + entityName);
+//			EntityStatistics entityStatistics = statistics.getEntityStatistics(entityName);
+//			System.out.println(entityStatistics);
+//		}
+
+	}
+
+
 }
