@@ -140,6 +140,14 @@ public class HomePage extends WebPage {
 						entities.detach();
 					}
 				});
+				item.add(new Button("delete") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onSubmit() {
+						dao.delete(item.getModelObject().getId());
+					}
+				});
 			}
 		};
 		form.add(list);

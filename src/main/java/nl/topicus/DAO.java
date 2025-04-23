@@ -55,6 +55,14 @@ public class DAO {
 		em.createQuery(delete).executeUpdate();
 	}
 
+	public void delete(Long id) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaDelete<MyEntity> delete = cb.createCriteriaDelete(MyEntity.class);
+		Root<MyEntity> root = delete.from(MyEntity.class);
+		delete.where(cb.equal(root.get("id"), id));
+		em.createQuery(delete).executeUpdate();
+	}
+
 	public void wipeDB() {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaDelete<MyEntity> delete = cb.createCriteriaDelete(MyEntity.class);
