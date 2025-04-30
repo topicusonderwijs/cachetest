@@ -92,6 +92,11 @@ public class DAO {
 		update.set("value", new Random().nextInt());
 		em.createQuery(update).executeUpdate();
 	}
+
+	public void updateViaEntity(MyEntity entity) {
+		entity.setValue(new Random().nextInt());
+		em.flush();
+	}
 	
 	public void persist(MyEntity myEntity)
 	{

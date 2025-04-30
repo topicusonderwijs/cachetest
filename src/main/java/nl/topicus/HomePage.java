@@ -112,13 +112,24 @@ public class HomePage extends WebPage {
 						entities.detach();
 					}
 				});
-				item.add(new Button("update") {
+				item.add(new Button("updateViaCriteria") {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onSubmit() {
 						dao.updateViaCriteria(item.getModelObject().getId());
 						entities.detach();
+					}
+				});
+				item.add(new Button("updateViaEntity") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onSubmit() {
+						MyEntity myEntity = dao.read(item.getModelObject().getId());
+
+						dao.updateViaEntity(myEntity);
+//						entities.detach();
 					}
 				});
 				item.add(new Button("read") {
