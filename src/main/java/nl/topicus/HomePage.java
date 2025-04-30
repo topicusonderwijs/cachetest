@@ -176,8 +176,5 @@ public class HomePage extends WebPage {
 				dao.flush();
 			}
 		});
-
-		
-
 	}
 }
