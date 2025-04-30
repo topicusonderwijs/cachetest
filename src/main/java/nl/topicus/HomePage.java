@@ -177,41 +177,7 @@ public class HomePage extends WebPage {
 			}
 		});
 
-		form.add(new Button("listEntititiesInCache") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onSubmit()
-			{
-				try
-				{
-					logCurrentCache();
-				}
-				catch (NamingException e)
-				{
-					throw new RuntimeException(e);
-				}
-			}
-		 });
-
+		
 
 	}
-	public void logCurrentCache() throws NamingException
-	{
-		System.out.println("hello");
-		Context context = new InitialContext();
-		EmbeddedCacheManager cacheManager = (EmbeddedCacheManager) context.lookup("java:jboss/infinispan/container/hibernate");
-
-
-//		Statistics statistics = cache.getSessionFactory().getStatistics();
-//		for (String entityName : statistics.getEntityNames())
-//		{
-//			System.out.println("entity: " + entityName);
-//			EntityStatistics entityStatistics = statistics.getEntityStatistics(entityName);
-//			System.out.println(entityStatistics);
-//		}
-
-	}
-
-
 }
