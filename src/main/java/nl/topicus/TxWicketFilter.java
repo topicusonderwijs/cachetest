@@ -2,14 +2,14 @@ package nl.topicus;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
-import javax.transaction.Transactional;
+import jakarta.inject.Inject;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.transaction.Transactional;
 
 import org.apache.wicket.protocol.http.WicketFilter;
 

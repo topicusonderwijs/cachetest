@@ -3,19 +3,19 @@ package nl.topicus;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Resource;
-import javax.ejb.EJBContext;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Root;
+import jakarta.annotation.Resource;
+import jakarta.ejb.EJBContext;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.CriteriaUpdate;
+import jakarta.persistence.criteria.Root;
 
 import org.hibernate.CacheMode;
 import org.hibernate.Session;
@@ -55,6 +55,14 @@ public class DAO {
 		em.createQuery(delete).executeUpdate();
 	}
 
+	public void delete(Long id) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaDelete<MyEntity> delete = cb.createCriteriaDelete(MyEntity.class);
+		Root<MyEntity> root = delete.from(MyEntity.class);
+		delete.where(cb.equal(root.get("id"), id));
+		em.createQuery(delete).executeUpdate();
+	}
+
 	public void wipeDB() {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaDelete<MyEntity> delete = cb.createCriteriaDelete(MyEntity.class);
@@ -83,6 +91,11 @@ public class DAO {
 		update.where(cb.equal(root.get("id"), id));
 		update.set("value", new Random().nextInt());
 		em.createQuery(update).executeUpdate();
+	}
+
+	public void updateViaEntity(MyEntity entity) {
+		entity.setValue(new Random().nextInt());
+		em.flush();
 	}
 	
 	public void persist(MyEntity myEntity)

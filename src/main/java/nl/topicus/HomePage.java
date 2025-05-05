@@ -2,8 +2,9 @@ package nl.topicus;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.inject.Inject;
+import jakarta.persistence.Cache;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -15,12 +16,23 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.hibernate.stat.EntityStatistics;
+import org.hibernate.stat.Statistics;
+import org.infinispan.manager.EmbeddedCacheManager;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 public class HomePage extends WebPage {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private DAO dao;
+
+//	@Resource(lookup = "java:jboss/infinispan/container/hibernate")
+//	@Resource(lookup = "java:jboss/infinispan/cache/hibernate/entity")
+//	private Cache cache;
 
 	private long lastId = 0L;
 
@@ -100,13 +112,24 @@ public class HomePage extends WebPage {
 						entities.detach();
 					}
 				});
-				item.add(new Button("update") {
+				item.add(new Button("updateViaCriteria") {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onSubmit() {
 						dao.updateViaCriteria(item.getModelObject().getId());
 						entities.detach();
+					}
+				});
+				item.add(new Button("updateViaEntity") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onSubmit() {
+						MyEntity myEntity = dao.read(item.getModelObject().getId());
+
+						dao.updateViaEntity(myEntity);
+//						entities.detach();
 					}
 				});
 				item.add(new Button("read") {
@@ -126,6 +149,14 @@ public class HomePage extends WebPage {
 						e.setValue(e.getValue() + 1);
 						((HttpServletRequest) getWebRequest().getContainerRequest()).setAttribute("rollback", true);
 						entities.detach();
+					}
+				});
+				item.add(new Button("delete") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onSubmit() {
+						dao.delete(item.getModelObject().getId());
 					}
 				});
 			}
